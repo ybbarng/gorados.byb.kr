@@ -32,9 +32,9 @@ $(function() {
   };
 
   $.get("data.json", params, function(data) {
-    var markers = $(data.data).map(function(i, element) {
+    var markers = $(data).map(function(i, element) {
       return new daum.maps.Marker({
-          position: new daum.maps.LatLng(element.lat, element.lng)
+          position: new daum.maps.LatLng(element.latitude, element.longitude)
       });
     });
     clusterer.addMarkers(markers);

@@ -16,7 +16,7 @@ app.get('/data.json', function(req, res) {
     req.query.min_longitude,
     req.query.max_longitude,
     function(err, rows) {
-      console.log(rows);
+      res.send(rows);
   });
 });
 
