@@ -5,6 +5,7 @@ def jsonify(response):
     data = json.loads(json_str)['list']
     print('# of elements: {}'.format(len(data)))
     for element in data:
+        element['id'] = '{},{}'.format(element['lat'], element['lng'])
         if element['level'] == '1':
             element['type'] = 'pokestop'
         elif element['level'] == '100':

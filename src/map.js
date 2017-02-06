@@ -21,7 +21,17 @@ $(function() {
       }]
   });
 
-  $.get("data.json", function(data) {
+  var bounds = map.getBounds();
+  var sw = bounds.getSouthWest();
+  var ne = bounds.getNorthEast();
+  var params = {
+    min_latitude: sw.hb,
+    min_longitude: sw.gb,
+    max_latitude: ne.hb,
+    max_longitude: ne.gb
+  };
+
+  $.get("data.json", params, function(data) {
     var markers = $(data.data).map(function(i, element) {
       return new daum.maps.Marker({
           position: new daum.maps.LatLng(element.lat, element.lng)

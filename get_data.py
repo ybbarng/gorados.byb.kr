@@ -1,5 +1,6 @@
 import time
 import json
+import sqlite3
 
 import requests
 
@@ -82,8 +83,23 @@ for i in range(lat_start, lat_end):
         portals += data
         time.sleep(1)
 
-with open('n_portals1.json', 'w') as f:
-    json.dump(n_portals, f, indent='  ')
+with sqlite3.connect('data.db') as conn:
+    cur = conn.cursor()
+    table_name = 'portal'
 
-with open('portals1.json', 'w') as f:
-    json.dump({'data': portals}, f, indent='  ')
+    cur.execute('''
+CREATE TABLE IF NOT EXISTS {0} (
+    id TEXT PRIMARY KEY,
+    latitude REAL NOT NULL,
+    longitude real NOT NULL,
+    type TEXT CHECK (type IN ('pokestop', 'gym')) NOT NULL
+);
+'''.format(table_name));
+    cur.execute('CREATE INDEX IF NOT EXISTS {0}_latitude_idx ON {0} (latitude);'.format(table_name));
+    cur.execute('CREATE INDEX IF NOT EXISTS {0}_latitude_idx ON {0} (longitude);'.format(table_name));
+
+    insert_sql = 'INSERT OR REPLACE INTO {0} (id, latitude, longitude, type) values (?, ?, ?, ?);'.format(table_name);
+    for data in portals:
+        cur.execute(insert_sql, (data['id'], data['lat'], data['lng'], data['type']))
+    cur.execute('SELECT COUNT(*) FROM {0};'.format(table_name));
+    print('# of records: {}'.format(cur.fetchall()[0]))
