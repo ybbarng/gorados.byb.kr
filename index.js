@@ -33,6 +33,7 @@ app.get('/data.geojson', function(req, res) {
             'properties': {
               'Primary ID': row['id'],
               'Secondary ID': row['id'],
+              'icon': row['type']
             },
             'geometry': {
               'type': 'Point',

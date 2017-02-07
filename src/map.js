@@ -17,12 +17,26 @@ $(function() {
     });
 
 		map.addLayer({
-				'id': 'unclustered-points',
+				'id': 'unclustered-pokestops',
 				'type': 'symbol',
 				'source': 'portals',
-				'filter': ['!has', 'point_count'],
+				'filter': ['all',
+                      ['!has', 'point_count'],
+                      ['==', 'icon', 'pokestop']],
 				'layout': {
-						'icon-image': 'marker-15'
+            'icon-image': 'marker-15'
+				}
+		});
+
+		map.addLayer({
+				'id': 'unclustered-gyms',
+				'type': 'symbol',
+				'source': 'portals',
+				'filter': ['all',
+                      ['!has', 'point_count'],
+                      ['==', 'icon', 'gym']],
+				'layout': {
+            'icon-image': 'stadium-15'
 				}
 		});
 
