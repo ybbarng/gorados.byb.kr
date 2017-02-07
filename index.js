@@ -48,13 +48,12 @@ app.get('/portals.geojson', function(req, res) {
 });
 
 app.get('/pokemons.json', function(req, res) {
-  db.all('SELECT * FROM ' + pokemon_table + ' LIMIT 500',
-    /*+ ' WHERE latitude >= ? AND latitude < ? AND longitude >= ? AND longitude < ?',
+  db.all('SELECT * FROM ' + pokemon_table + 
+    ' WHERE latitude >= ? AND latitude < ? AND longitude >= ? AND longitude < ?' + ' LIMIT 500',
     req.query.min_latitude,
     req.query.max_latitude,
     req.query.min_longitude,
     req.query.max_longitude,
-    */
     function(err, rows) {
       res.send(rows);
   });

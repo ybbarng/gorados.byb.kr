@@ -7,6 +7,39 @@ $(function() {
       zoom: 6
   });
 
+  var pokemon_width = 40;
+  var pokemon_height = 40;
+  var updateFlag = false;
+  function updatePokemons() {
+    if (updateFlag) {
+      return;
+    }
+    updateFlag = true;
+    var bounds = map.getBounds();
+    var params = {
+      'min_latitude': bounds._sw.lat,
+      'max_latitude': bounds._ne.lat,
+      'min_longitude': bounds._sw.lng,
+      'max_longitude': bounds._ne.lng
+    }
+    $.get('pokemons.json', params, function(pokemons) {
+      $('.pokemon-marker').remove();
+      $.each(pokemons, function(i, pokemon) {
+        var el = document.createElement('div');
+        el.className = 'pokemon-marker';
+        el.style.backgroundImage = 'url(static/images/pokemons/' + pokemon['pokemon_id'] + '.png)';
+        el.style.width = pokemon_width + 'px';
+        el.style.height = pokemon_height + 'px';
+        el.style.backgroundSize = '100%';
+
+        new mapboxgl.Marker(el, {offset: [-pokemon_width / 2, -pokemon_height / 2]})
+          .setLngLat([pokemon['longitude'], pokemon['latitude']])
+          .addTo(map);
+      });
+      updateFlag = false;
+    });
+  }
+
   map.on('load', function() {
     map.addSource('portals', {
         type: 'geojson',
@@ -81,23 +114,9 @@ $(function() {
 						'text-size': 12
 				}
 		});
-
-    var pokemon_width = 40;
-    var pokemon_height = 40;
-    $.get('pokemons.json', function(pokemons) {
-      $.each(pokemons, function(i, pokemon) {
-        var el = document.createElement('div');
-        el.className = 'marker';
-        el.style.backgroundImage = 'url(static/images/pokemons/' + pokemon['pokemon_id'] + '.png)';
-        el.style.width = pokemon_width + 'px';
-        el.style.height = pokemon_height + 'px';
-        el.style.backgroundSize = '100%';
-
-        console.log(el);
-        new mapboxgl.Marker(el, {offset: [-pokemon_width / 2, -pokemon_height / 2]})
-          .setLngLat([pokemon['longitude'], pokemon['latitude']])
-          .addTo(map);
-      });
-    });
+    updatePokemons();
+  });
+  map.on('moveend', function() {
+    updatePokemons();
   });
 });
