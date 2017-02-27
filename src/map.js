@@ -44,7 +44,6 @@ $(function() {
     }
     updateFlag = true;
     var bounds = Utils.boundsWithPadding(map.getBounds(), 1);
-    removeMarkersOutOfBounds(bounds);
     var params = {
       'min_latitude': bounds._southWest.lat,
       'max_latitude': bounds._northEast.lat,
@@ -52,7 +51,7 @@ $(function() {
       'max_longitude': bounds._northEast.lng
     };
     $.get('pokemons.json', params, function(pokemons) {
-      $('.pokemon-marker').remove();
+      removeMarkersOutOfBounds(bounds);
       $.each(pokemons, function(i, pokemon) {
         var id = pokemon['id'];
         var pokemonMarker = pokemonMarkers[pokemon['pokemon_id']];
