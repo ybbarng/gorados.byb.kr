@@ -1,3 +1,6 @@
+"""
+    data from: http://www2.pokemonsmap.com/map/
+"""
 import time
 import json
 import sqlite3
