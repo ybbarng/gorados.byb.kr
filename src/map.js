@@ -8,21 +8,7 @@ $(function() {
     .setView([37.475533, 126.964645], 16);
   L.control.locate().addTo(map);
 
-  var pokemon_width = 40;
-  var pokemon_height = 40;
-  var PokemonMarker = L.Icon.extend({
-    options: {
-      iconSize: [pokemon_width, pokemon_height],
-      iconAnchor: [pokemon_width / 2, pokemon_height / 2]
-    }
-  });
-
-  var pokemonMarkers = {
-  };
-
-  var markers = new Map();
-
-  function removeMarkersOutOfBounds(bounds) {
+  function removeMarkersOutOfBounds(markers, bounds) {
     var toBeRemoved = [];
     markers.forEach(function(marker, id, _) {
       if (!bounds.contains(marker.getLatLng())) {
@@ -37,12 +23,27 @@ $(function() {
     }
   }
 
-  var updateFlag = false;
+  /* pokemon marker */
+  var pokemon_marker_width = 40;
+  var pokemon_marker_height = 40;
+  var PokemonMarker = L.Icon.extend({
+    options: {
+      iconSize: [pokemon_marker_width, pokemon_marker_height],
+      iconAnchor: [pokemon_marker_width / 2, pokemon_marker_height / 2]
+    }
+  });
+
+  var pokemonMarkerTempletes = {
+  };
+
+  var pokemonMarkers = new Map();
+
+  var updatePokemonsFlag = false;
   function updatePokemons() {
-    if (updateFlag) {
+    if (updatePokemonsFlag) {
       return;
     }
-    updateFlag = true;
+    updatePokemonsFlag = true;
     var bounds = Utils.boundsWithPadding(map.getBounds(), 1);
     var params = {
       'min_latitude': bounds._southWest.lat,
@@ -51,28 +52,84 @@ $(function() {
       'max_longitude': bounds._northEast.lng
     };
     $.get('pokemons.json', params, function(pokemons) {
-      removeMarkersOutOfBounds(bounds);
+      removeMarkersOutOfBounds(pokemonMarkers, bounds);
       $.each(pokemons, function(i, pokemon) {
         var id = pokemon['id'];
-        var pokemonMarker = pokemonMarkers[pokemon['pokemon_id']];
+        var pokemonMarker = pokemonMarkerTempletes[pokemon['pokemon_id']];
         if (pokemonMarker === undefined) {
           pokemonMarker = new PokemonMarker({iconUrl: 'static/images/pokemons/' + pokemon['pokemon_id'] + '.png'});
-          pokemonMarkers[pokemon['pokemon_id']] = pokemonMarker;
+          pokemonMarkerTempletes[pokemon['pokemon_id']] = pokemonMarker;
         }
         var marker = new L.marker(
             [pokemon['latitude'], pokemon['longitude']],
             {icon: pokemonMarker});
-        if (!markers.has(id)) {
+        if (!pokemonMarkers.has(id)) {
           map.addLayer(marker);
-          markers.set(id, marker);
+          pokemonMarkers.set(id, marker);
         }
       });
-      updateFlag = false;
+      updatePokemonsFlag = false;
     });
   }
-  updatePokemons();
+  /* pokemon marker end */
 
-  map.on('moveend', function() {
+  /* place marker */
+  var place_marker_width = 15;
+  var place_marker_height = 15;
+  var PlaceMarker = L.Icon.extend({
+    options: {
+      iconSize: [place_marker_width, place_marker_height],
+      iconAnchor: [place_marker_width / 2, place_marker_height / 2]
+    }
+  });
+
+  var placeMarkerTempletes = {
+  };
+
+  var placeMarkers = new Map();
+
+  var updatePlacesFlag = false;
+  function updatePlaces() {
+    if (updatePlacesFlag) {
+      return;
+    }
+    updatePlacesFlag = true;
+    var bounds = Utils.boundsWithPadding(map.getBounds(), 1);
+    var params = {
+      'min_latitude': bounds._southWest.lat,
+      'max_latitude': bounds._northEast.lat,
+      'min_longitude': bounds._southWest.lng,
+      'max_longitude': bounds._northEast.lng
+    };
+    $.get('places.json', params, function(places) {
+      removeMarkersOutOfBounds(placeMarkers, bounds);
+      $.each(places, function(i, place) {
+        var id = place['id'];
+        var placeMarker = placeMarkerTempletes[place['type']];
+        if (placeMarker === undefined) {
+          placeMarker = new PlaceMarker({iconUrl: 'static/images/places/' + place['type'] + '.png'});
+          placeMarkerTempletes[place['type']] = placeMarker;
+        }
+        var marker = new L.marker(
+            [place['latitude'], place['longitude']],
+            {icon: placeMarker});
+        if (!placeMarkers.has(id)) {
+          map.addLayer(marker);
+          placeMarkers.set(id, marker);
+        }
+      });
+      updatePlacesFlag = false;
+    });
+  }
+
+
+  function update() {
     updatePokemons();
+    updatePlaces();
+  }
+
+  update();
+  map.on('moveend', function() {
+    update();
   });
 });
