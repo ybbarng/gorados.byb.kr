@@ -24,6 +24,16 @@ $(function() {
     }
   }
 
+  var selectedMarker = null;
+  function updatePopup() {
+    if (selectedMarker == null) {
+      return;
+    }
+    if (selectedMarker.pokemon) {
+      selectedMarker.bindPopup(Pokemon.toString(selectedMarker.pokemon));
+    }
+  }
+
   /* pokemon marker */
   var pokemon_marker_width = 40;
   var pokemon_marker_height = 40;
@@ -64,7 +74,12 @@ $(function() {
         var marker = new L.marker(
             [pokemon['latitude'], pokemon['longitude']],
             {icon: pokemonMarker});
-        marker.bindPopup(Pokemon.toString(pokemon));
+        marker.pokemon = pokemon;
+        marker.addEventListener('click', function(e) {
+          selectedMarker = e.target;
+          updatePopup();
+          selectedMarker.openPopup();
+        });
         if (!pokemonMarkers.has(id)) {
           map.addLayer(marker);
           pokemonMarkers.set(id, marker);
@@ -135,5 +150,10 @@ $(function() {
     update();
   });
 
+  map.on('popupclose', function() {
+    selectedMarker = null;
+  });
+
+  setInterval(updatePopup, 1000);
   setInterval(updatePokemons, 60 * 1000);
 });

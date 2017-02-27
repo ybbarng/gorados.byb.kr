@@ -16,6 +16,13 @@ function getIvRank(iv_perfection) {
   return 'E';
 }
 
+function pad(n) {
+  if (n < 10) {
+    return '0' + n;
+  }
+  return '' + n;
+}
+
 exports.toString = function(pokemon) {
   var name = Pokedex[pokemon['pokemon_id']] || pokemon['pokemon_id'];
   var perfection = getIvPerfection(
@@ -30,7 +37,7 @@ exports.toString = function(pokemon) {
   var delta = Number(pokemon['despawn']) - (Date.now() / 1000);
   var despawnStr = '';
   if (delta > 0) {
-    despawnStr = parseInt(delta / 60) + ':' + parseInt(delta % 60);
+    despawnStr = pad(parseInt(delta / 60)) + ':' + pad(parseInt(delta % 60));
   } else {
     despawnStr = '사라졌습니다.';
   }
