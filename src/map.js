@@ -94,7 +94,7 @@ $(function() {
       return;
     }
     updatePlacesFlag = true;
-    var bounds = Utils.boundsWithPadding(map.getBounds(), 1);
+    var bounds = Utils.boundsWithPadding(map.getBounds(), 0.5);
     var params = {
       'min_latitude': bounds._southWest.lat,
       'max_latitude': bounds._northEast.lat,
