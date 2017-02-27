@@ -18,17 +18,20 @@ $(function() {
   var pokemonMarkers = {
   };
 
-  var markers = [];
+  var markers = new Map();
 
   function removeMarkersOutOfBounds(bounds) {
     var toBeRemoved = [];
-    for (var i = 0; i < markers.length; i++) {
-      var marker = markers[i];
-      map.removeLayer(marker);
-      toBeRemoved.push(marker);
-    }
-    for (var i = 0; i < toBeRemoved.length; i++) {
-      markers.splice(markers.indexOf(toBeRemoved[i]), 1);
+    markers.forEach(function(marker, id, _) {
+      if (!bounds.contains(marker.getLatLng())) {
+        map.removeLayer(marker);
+        toBeRemoved.push(id);
+      }
+    });
+    for (var id of toBeRemoved) {
+      if (markers.has(id)) {
+        markers.delete(id);
+      }
     }
   }
 
@@ -40,16 +43,6 @@ $(function() {
     updateFlag = true;
     var bounds = map.getBounds();
     removeMarkersOutOfBounds(bounds);
-    var toBeRemoved = [];
-    for (var i = 0; i < markers.length; i++) {
-      var marker = markers[i];
-      console.log(bounds.contains(marker.getLatLng()));
-      map.removeLayer(marker);
-      toBeRemoved.append(marker);
-    }
-    for (var i = 0; i < toBeRemoved.length; i++) {
-      markers.splice(markers.indexOf(toBeRemoved[i]), 1);
-    }
     var params = {
       'min_latitude': bounds._southWest.lat,
       'max_latitude': bounds._northEast.lat,
@@ -59,6 +52,7 @@ $(function() {
     $.get('pokemons.json', params, function(pokemons) {
       $('.pokemon-marker').remove();
       $.each(pokemons, function(i, pokemon) {
+        var id = pokemon['id'];
         var pokemonMarker = pokemonMarkers[pokemon['pokemon_id']];
         if (pokemonMarker === undefined) {
           pokemonMarker = new PokemonMarker({iconUrl: 'static/images/pokemons/' + pokemon['pokemon_id'] + '.png'});
@@ -67,8 +61,10 @@ $(function() {
         var marker = new L.marker(
             [pokemon['latitude'], pokemon['longitude']],
             {icon: pokemonMarker});
-        map.addLayer(marker);
-        markers.push(marker);
+        if (!markers.has(id)) {
+          map.addLayer(marker);
+          markers.set(id, marker);
+        }
       });
       updateFlag = false;
     });
