@@ -8,10 +8,10 @@ $(function() {
     .setView([37.475533, 126.964645], 16);
   L.control.locate().addTo(map);
 
-  function removeMarkersOutOfBounds(markers, bounds) {
+  function removeMarkersOutOfBounds(markers, bounds, removeAll) {
     var toBeRemoved = [];
     markers.forEach(function(marker, id, _) {
-      if (!bounds.contains(marker.getLatLng())) {
+      if (!bounds.contains(marker.getLatLng()) || removeAll) {  // temporary method
         map.removeLayer(marker);
         toBeRemoved.push(id);
       }
@@ -52,7 +52,7 @@ $(function() {
       'max_longitude': bounds._northEast.lng
     };
     $.get('pokemons.json', params, function(pokemons) {
-      removeMarkersOutOfBounds(pokemonMarkers, bounds);
+      removeMarkersOutOfBounds(pokemonMarkers, bounds, true);
       $.each(pokemons, function(i, pokemon) {
         var id = pokemon['id'];
         var pokemonMarker = pokemonMarkerTempletes[pokemon['pokemon_id']];
@@ -102,7 +102,7 @@ $(function() {
       'max_longitude': bounds._northEast.lng
     };
     $.get('places.json', params, function(places) {
-      removeMarkersOutOfBounds(placeMarkers, bounds);
+      removeMarkersOutOfBounds(placeMarkers, bounds, false);
       $.each(places, function(i, place) {
         var id = place['id'];
         var placeMarker = placeMarkerTempletes[place['type']];
@@ -132,4 +132,6 @@ $(function() {
   map.on('moveend', function() {
     update();
   });
+
+  setInterval(updatePokemons, 60 * 1000);
 });
