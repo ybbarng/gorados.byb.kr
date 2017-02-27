@@ -15,12 +15,17 @@ $(function() {
   var pokemonMarkers = {
   };
 
+  var markers = [];
+
   var updateFlag = false;
   function updatePokemons() {
     if (updateFlag) {
       return;
     }
     updateFlag = true;
+    for (var i = 0; i < markers.length; i++) {
+      map.removeLayer(markers[i]);
+    }
     var bounds = map.getBounds();
     var params = {
       'min_latitude': bounds._southWest.lat,
@@ -36,10 +41,11 @@ $(function() {
           pokemonMarker = new PokemonMarker({iconUrl: 'static/images/pokemons/' + pokemon['pokemon_id'] + '.png'});
           pokemonMarkers[pokemon['pokemon_id']] = pokemonMarker;
         }
-        L.marker(
+        var marker = new L.marker(
             [pokemon['latitude'], pokemon['longitude']],
-            {icon: pokemonMarker})
-          .addTo(map);
+            {icon: pokemonMarker});
+        map.addLayer(marker);
+        markers.push(marker);
       });
       updateFlag = false;
     });
