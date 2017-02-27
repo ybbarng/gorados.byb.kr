@@ -1,3 +1,6 @@
+var Pokedex = require('./pokedex_korean.json');
+var Moves = require('./pokemon_moves.json');
+
 function getIvPerfection(attack, defence, stamina) {
   return (Number(attack) + Number(defence) + Number(stamina)) / 45 * 100;
 }
@@ -14,12 +17,15 @@ function getIvRank(iv_perfection) {
 }
 
 exports.toString = function(pokemon) {
+  var name = Pokedex[pokemon['pokemon_id']] || pokemon['pokemon_id'];
   var perfection = getIvPerfection(
     pokemon['attack'],
     pokemon['defence'],
     pokemon['stamina']);
   var rank = getIvRank(perfection);
   var perfectionStr = perfection.toFixed(1);
+  var move1 = Moves[pokemon['move1']] || pokemon['move1'];
+  var move2 = Moves[pokemon['move2']] || pokemon['move2'];
 
   var delta = Number(pokemon['despawn']) - (Date.now() / 1000);
   var despawnStr = '';
@@ -28,8 +34,8 @@ exports.toString = function(pokemon) {
   } else {
     despawnStr = '사라졌습니다.';
   }
-  return '<b>' + pokemon['pokemon_id'] + '</b> ' + rank + ' (' + perfectionStr + '%: ' + pokemon['attack'] + '/' + pokemon['defence'] + '/' + pokemon['stamina'] + ')<br>' +
+  return '<b>' + name + '</b> ' + rank + ' (' + perfectionStr + '%: ' + pokemon['attack'] + '/' + pokemon['defence'] + '/' + pokemon['stamina'] + ')<br>' +
     '남은 시간: ' + despawnStr + '<br>' +
-    pokemon['move1'] + '/' + pokemon['move2'] + '<br>' +
+    move1 + '/' + move2 + '<br>' +
     'disguise: ' + pokemon['disguise'] + '<br>';
 }
