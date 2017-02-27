@@ -1,3 +1,5 @@
+var Utils = require('./utils');
+
 $(function() {
   L.mapbox.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
   var map = new L.mapbox.Map('map', 'mapbox.streets', {
@@ -41,7 +43,7 @@ $(function() {
       return;
     }
     updateFlag = true;
-    var bounds = map.getBounds();
+    var bounds = Utils.boundsWithPadding(map.getBounds(), 1);
     removeMarkersOutOfBounds(bounds);
     var params = {
       'min_latitude': bounds._southWest.lat,
