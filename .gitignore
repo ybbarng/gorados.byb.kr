@@ -166,6 +166,6 @@ tags
 
 *.json
 *.txt
-app/js/
+app/js/map.js
 
 data.db

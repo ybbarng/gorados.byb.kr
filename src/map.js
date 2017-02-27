@@ -2,6 +2,7 @@ $(function() {
   L.mapbox.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
   var map = new L.mapbox.Map('map', 'mapbox.streets')
     .setView([37.475533, 126.964645], 16);
+  L.control.locate().addTo(map);
 
   var pokemon_width = 40;
   var pokemon_height = 40;
