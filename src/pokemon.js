@@ -41,8 +41,9 @@ exports.toString = function(pokemon) {
   } else {
     despawnStr = '사라졌습니다.';
   }
-  return '<b>' + name + '</b> ' + rank + ' (' + perfectionStr + '%: ' + pokemon['attack'] + '/' + pokemon['defence'] + '/' + pokemon['stamina'] + ')<br>' +
-    '남은 시간: ' + despawnStr + '<br>' +
-    move1 + '/' + move2 + '<br>' +
+  return '<h2>' + name + '</h2> ' +
+    '<b>개체치</b>: '+ rank + ' (' + perfectionStr + '%: ' + pokemon['attack'] + '/' + pokemon['defence'] + '/' + pokemon['stamina'] + ')<br>' +
+    '<b>남은 시간</b>: ' + despawnStr + '<br>' +
+    '<b>기술</b>: ' + move1 + '/' + move2 + '<br>' +
     'disguise: ' + pokemon['disguise'] + '<br>';
 }
