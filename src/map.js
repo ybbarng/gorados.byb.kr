@@ -77,10 +77,11 @@ $(function() {
             [pokemon['latitude'], pokemon['longitude']],
             {icon: pokemonMarker});
         marker.pokemon = pokemon;
+        marker.bindPopup('');
         marker.addEventListener('click', function(e) {
           selectedMarker = e.target;
           updatePopup();
-          selectedMarker.openPopup();
+          // The popup will be open automatically by the default event listener
         });
         if (!pokemonMarkers.has(id)) {
           map.addLayer(marker);
