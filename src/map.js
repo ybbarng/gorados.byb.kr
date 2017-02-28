@@ -32,7 +32,7 @@ $(function() {
       return;
     }
     if (selectedMarker.pokemon) {
-      selectedMarker.bindPopup(Pokemon.toString(selectedMarker.pokemon));
+      selectedMarker.setPopupContent(Pokemon.toString(selectedMarker.pokemon));
     }
   }
 
