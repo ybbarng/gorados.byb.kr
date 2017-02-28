@@ -42,7 +42,8 @@ $(function() {
   var PokemonMarker = L.Icon.extend({
     options: {
       iconSize: [pokemon_marker_width, pokemon_marker_height],
-      iconAnchor: [pokemon_marker_width / 2, pokemon_marker_height / 2]
+      iconAnchor: [pokemon_marker_width / 2, pokemon_marker_height / 2],
+      popupAnchor: [0, -pokemon_marker_height * 0.3]
     }
   });
 
