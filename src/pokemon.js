@@ -70,6 +70,10 @@ function getMapLinks(latitude, longitude, label) {
 
 exports.toString = function(pokemon) {
   var name = Pokedex[pokemon['pokemon_id']] || pokemon['pokemon_id'];
+  if (pokemon['disguise'] === '1') {
+    name = Pokedex['132'] + '(' + name + '(으)로 변신)';
+    pokemon['pokemon_id'] = '132';
+  }
   var perfection = getIvPerfection(
     pokemon['attack'],
     pokemon['defence'],

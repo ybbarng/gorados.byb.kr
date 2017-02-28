@@ -71,7 +71,11 @@ $(function() {
         var id = pokemon['id'];
         var pokemonMarker = pokemonMarkerTempletes[pokemon['pokemon_id']];
         if (pokemonMarker === undefined) {
-          pokemonMarker = new PokemonMarker({iconUrl: 'static/images/pokemons/' + pokemon['pokemon_id'] + '.png'});
+          var pokemon_id = pokemon['pokemon_id'];
+          if (pokemon['disguise'] === '1') { // If ditto
+            pokemon_id = '132';
+          }
+          pokemonMarker = new PokemonMarker({iconUrl: 'static/images/pokemons/' + pokemon_id + '.png'});
           pokemonMarkerTempletes[pokemon['pokemon_id']] = pokemonMarker;
         }
         var marker = new L.marker(
