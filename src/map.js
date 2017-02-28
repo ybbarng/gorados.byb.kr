@@ -84,6 +84,8 @@ $(function() {
         marker.pokemon = pokemon;
         marker.bindPopup('');
         marker.addEventListener('click', function(e) {
+          var now = Date.now() / 1000;
+          marker.setOpacity(Pokemon.getOpacity(e.target, now));
           selectedMarker = e.target;
           updatePopup();
           // The popup will be open automatically by the default event listener
@@ -150,8 +152,20 @@ $(function() {
     });
   }
 
+  function updatePokemonsInMap() {
+    var now = Date.now() / 1000;
+    var bounds = map.getBounds();
+    pokemonMarkers.forEach(function(marker, id, _) {
+      if (!bounds.contains(marker.getLatLng())) {
+        return;
+      }
+      var opacity = Pokemon.getOpacity(marker, now);
+      marker.setOpacity(opacity);
+    });
+  }
 
   function update() {
+    updatePokemonsInMap();
     updatePlaces();
     updatePokemons();
   }
@@ -162,9 +176,12 @@ $(function() {
   });
 
   map.on('popupclose', function() {
+    var now = Date.now() / 1000;
+    selectedMarker.setOpacity(Pokemon.getOpacity(selectedMarker, now, true));
     selectedMarker = null;
   });
 
   setInterval(updatePopup, 1000);
   setInterval(updatePokemons, 60 * 1000);
+  setInterval(updatePokemonsInMap, 1000);
 });

@@ -23,6 +23,18 @@ function pad(n) {
   return (n < 10 ? '0' : '') + n;
 }
 
+exports.getOpacity = function(pokemonMarker, now, dehighlight) {
+  var pokemon = pokemonMarker.pokemon;
+  if (!dehighlight) {
+    if (pokemonMarker.getPopup().isOpen()) {
+      return 1;
+    }
+  }
+  var diff = Number(pokemon['despawn']) - now;
+  var opacity = diff / 60 / 30 * 0.5 + 0.5;
+  return opacity;
+}
+
 function getMapDom(href, imageSrc, newTap) {
   var newTapStr = '';
   if (newTap) {
