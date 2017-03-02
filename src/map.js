@@ -183,5 +183,5 @@ $(function() {
 
   setInterval(updatePopup, 1000);
   setInterval(updatePokemons, 60 * 1000);
-  setInterval(updatePokemonsInMap, 1000);
+  setInterval(updatePokemonsInMap, 60 * 1000);
 });
