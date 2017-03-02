@@ -102,6 +102,7 @@ $(function() {
           pokemonMarkers.set(id, marker);
         }
       });
+      updatePokemonsInMap();
       updatePokemonsFlag = false;
     });
   }
