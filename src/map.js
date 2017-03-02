@@ -23,6 +23,9 @@ $(function() {
       if (!bounds.contains(marker.getLatLng()) ||
           (marker.pokemon && (forceClear || Number(marker.pokemon['despawn']) < now)) ||
           (marker.pokemon === undefined && zoom <= placeInvisibleZoom)) {
+        if (marker === selectedMarker) {
+          selectedMarker = null;
+        }
         map.removeLayer(marker);
         toBeRemoved.push(id);
       }
@@ -198,7 +201,9 @@ $(function() {
 
   map.on('popupclose', function() {
     var now = Date.now() / 1000;
-    selectedMarker.setOpacity(selectedMarker.pokemon.getOpacity(now, true));
+    if (selectedMarker) {
+      selectedMarker.setOpacity(selectedMarker.pokemon.getOpacity(now, true));
+    }
     selectedMarker = null;
   });
 
