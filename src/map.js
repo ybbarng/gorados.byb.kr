@@ -72,6 +72,7 @@ $(function() {
     };
     $.get('pokemons.json', params, function(pokemons) {
       removeMarkersOutOfBounds(pokemonMarkers, bounds, forceClear);
+      var now = Date.now() / 1000;
       $.each(pokemons, function(i, pokemon) {
         var pokemon = new Pokemon(pokemon);
         var id = pokemon.id;
@@ -87,6 +88,7 @@ $(function() {
         marker.pokemon = pokemon;
         pokemon.setMarker(marker);
         marker.bindPopup('');
+        marker.setOpacity(pokemon.getOpacity(now));
         marker.addEventListener('click', function(e) {
           var now = Date.now() / 1000;
           marker.setOpacity(pokemon.getOpacity(now));
@@ -102,7 +104,6 @@ $(function() {
           pokemonMarkers.set(id, marker);
         }
       });
-      updatePokemonsInMap();
       updatePokemonsFlag = false;
     });
   }
