@@ -4,6 +4,9 @@ var Pokemon = require('./pokemon');
 var Platform = require('platform');
 var platform = Platform.os.family;
 
+var Throbber = require('./throbber');
+
+
 $(function() {
   L.mapbox.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
   var maxZoom = ['Android', 'iOS'].indexOf(platform) !== -1 ? 16 : 19;
@@ -75,6 +78,7 @@ $(function() {
       return;
     }
     updatePokemonsFlag = true;
+    Throbber.showThrobber();
     var bounds = Utils.boundsWithPadding(map.getBounds(), 1);
     var params = {
       'min_latitude': bounds._southWest.lat,
@@ -125,6 +129,7 @@ $(function() {
           }
         }
       });
+      Throbber.hideThrobber();
       updatePokemonsFlag = false;
     });
   }
@@ -155,6 +160,7 @@ $(function() {
       removeMarkersOutOfBounds(placeMarkers, bounds);
       return;
     }
+    Throbber.showThrobber();
     updatePlacesFlag = true;
     var params = {
       'min_latitude': bounds._southWest.lat,
@@ -182,6 +188,7 @@ $(function() {
           placeMarkers.set(id, marker);
         }
       });
+      Throbber.hideThrobber();
       updatePlacesFlag = false;
     });
   }

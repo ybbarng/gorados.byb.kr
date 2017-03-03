@@ -53,3 +53,17 @@ body {
   50% {opacity: 1.0;}
   100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
 }
+
+.throbber {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 115px;
+  left: 10px;
+  display: none;
+}
+
+.throbber svg {
+  width: 30px;
+  height: 30px;
+}
