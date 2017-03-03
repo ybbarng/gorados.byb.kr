@@ -41,8 +41,9 @@ app.get('/pokemons.json', function(req, res) {
     res.send([]);
     return;
   }
-  var zoom_level = Number(req.query.zoom_level) - 12;
+  var zoom_level = parseInt(req.query.zoom_level) - 12;
   zoom_level = Math.min(Math.max(0, zoom_level), 4);
+  console.log('Zoom Level: ' + req.query.zoom_level + ', ' + 'Classification Index: ' + zoom_level);
   var pokemons = classification[zoom_level];
   var timestamp = Date.now() / 1000 | 0;
   var center = get_center(req);
