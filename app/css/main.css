@@ -69,13 +69,32 @@ html, body {
   height: 30px;
 }
 
-#gorados-logo {
+#logo-wrapper {
   position: absolute;
   top: 10px;
   right: 10px;
+  pointer-events: none;
+}
+
+#gorados-logo {
   font-weight: 900;
+  font-size: 15px;
   color: white;
   text-shadow: 0.1em 0.1em 0.2em #777777;
-  pointer-events: none;
   font-family: "Malgun Gothic", Helvetica, Arial, sans-serif;
+  text-align: right;
+}
+
+#logo-supplement {
+  font-weight: 600;
+  font-size: 13px;
+  font-style: italic;
+  color: white;
+  text-shadow: 0.1em 0.1em 0.2em #777777;
+  font-family: Baskerville, “Baskerville Old Face”, “Hoefler Text”, Garamond, “Times New Roman”, serif;
+  text-align: right;
+}
+
+.heart {
+  color: #ff2a16;
 }
