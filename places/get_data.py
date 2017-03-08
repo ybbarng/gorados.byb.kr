@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS {0} (
 );
 '''.format(table_name));
     cur.execute('CREATE INDEX IF NOT EXISTS {0}_latitude_idx ON {0} (latitude);'.format(table_name));
-    cur.execute('CREATE INDEX IF NOT EXISTS {0}_latitude_idx ON {0} (longitude);'.format(table_name));
+    cur.execute('CREATE INDEX IF NOT EXISTS {0}_longitude_idx ON {0} (longitude);'.format(table_name));
 
     insert_sql = 'INSERT OR REPLACE INTO {0} (id, latitude, longitude, type) values (?, ?, ?, ?);'.format(table_name);
     for place in places:

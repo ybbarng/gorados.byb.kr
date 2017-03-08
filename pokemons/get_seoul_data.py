@@ -82,7 +82,7 @@ def save_pokemons(pokemons):
     '''.format(table_name));
         cur.execute('CREATE INDEX IF NOT EXISTS {0}_pokemon_id_idx ON {0} (pokemon_id);'.format(table_name));
         cur.execute('CREATE INDEX IF NOT EXISTS {0}_latitude_idx ON {0} (latitude);'.format(table_name));
-        cur.execute('CREATE INDEX IF NOT EXISTS {0}_latitude_idx ON {0} (longitude);'.format(table_name));
+        cur.execute('CREATE INDEX IF NOT EXISTS {0}_longitude_idx ON {0} (longitude);'.format(table_name));
         cur.execute('CREATE INDEX IF NOT EXISTS {0}_despawn_idx ON {0} (despawn);'.format(table_name));
 
         insert_sql = 'INSERT OR REPLACE INTO {0} (id, pokemon_id, latitude, longitude, despawn, disguise, attack, defence, stamina, move1, move2) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'.format(table_name);
