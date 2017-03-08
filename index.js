@@ -47,7 +47,9 @@ app.get('/pokemons.json', function(req, res) {
   var pokemons = classification[zoom_level];
   var timestamp = Date.now() / 1000 | 0;
   var center = get_center(req);
-  db.all('SELECT * FROM ' + pokemon_table +
+  db.all('SELECT *' +
+    ' FROM ' + pokemon_table +
+    ' INDEXED BY pokemon_despawn_idx' +
     ' WHERE latitude >= ? AND latitude < ? AND longitude >= ? AND longitude < ? AND despawn > ?' +
     ' AND pokemon_id in ( ' + pokemons.join(',') + ')' +
     ' ORDER BY ((latitude - ?) * (latitude - ?) + (longitude - ?) * (longitude - ?)) ASC' +
