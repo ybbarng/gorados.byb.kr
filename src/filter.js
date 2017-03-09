@@ -16,7 +16,7 @@ var filter_max = 251;
 function initFilters() {
   var $pokemon_list = $('#filter-list');
   for (var number in Pokedex) {
-    if (number + 0 > filter_max) {
+    if (number * 1 > filter_max) {
       break;
     }
     var $filter = $('<div class="filter">' +
