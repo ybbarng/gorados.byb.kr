@@ -6,6 +6,7 @@ exports.initFilter = function(onApplyHandler) {
   $('#filter-apply').click(onClickFilterApply);
   $('#filters').click(onClickFilters);
   $('#filters-popup').click(onClickFiltersPopup);
+  $('#search').keyup(onSearch);
   onApply = onApplyHandler;
 };
 
@@ -64,4 +65,15 @@ function onClickFiltersPopup(e) {
 
 function onClickFilters() {
   $('#filters').fadeOut();
+}
+
+function onSearch() {
+  var inputValue = $('#search').val();
+  $('.filter label').each(function() {
+    if ($(this).text().indexOf(inputValue) > -1) {
+      $(this).parent().show();
+    } else {
+      $(this).parent().hide();
+    }
+  });
 }
