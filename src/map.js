@@ -6,12 +6,14 @@ var platform = Platform.os.family;
 
 var Throbber = require('./throbber');
 var Get = require('./get');
+var Filter = require('./filter');
 
 var defaultLatLng = [37.475533, 126.964645];
 var defaultScale = 16;
 
 
 $(function() {
+  Filter.initFilter();
   var paramLatLng = Get.getUrlParameter('p');
   if (paramLatLng) {
     paramLatLng = paramLatLng.split(',').map(Number);
