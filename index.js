@@ -45,6 +45,13 @@ app.get('/pokemons.json', function(req, res) {
   zoom_level = Math.min(Math.max(0, zoom_level), 4);
   console.log('Zoom Level: ' + req.query.zoom_level + ', ' + 'Classification Index: ' + zoom_level);
   var pokemons = classification[zoom_level];
+  if (req.query.filters) {
+    if (/^[\d,]+$/.test(req.query.filters)) {
+      var filters = req.query.filters.split(',');
+      pokemons = pokemons.concat(filters);
+      pokemons = Array.from(new Set(pokemons));
+    }
+  }
   var timestamp = Date.now() / 1000 | 0;
   var center = get_center(req);
   db.all('SELECT *' +

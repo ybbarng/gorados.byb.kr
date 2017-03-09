@@ -1,11 +1,14 @@
 var Pokedex = require('./pokedex_korean.json');
 
-exports.initFilter = function() {
-  $('#filter-button a').click(exports.onClickFilterButton);
+var onApply = null;
+exports.initFilter = function(onApplyHandler) {
+  $('#filter-button a').click(onClickFilterButton);
+  $('#filter-apply').click(onClickFilterApply);
+  onApply = onApplyHandler;
 };
 
 var initialized = false;
-exports.onClickFilterButton = function() {
+function onClickFilterButton() {
   $('#filters').fadeToggle();
   if (!initialized) {
     initFilters();
@@ -28,5 +31,27 @@ function initFilters() {
       '</li>');
     $pokemon_list.append($filter);
   }
+  $('.filter').on('touchstart', function() {
+    $(this).addClass('touch');
+  });
+  $('.filter').on('touchend', function() {
+    $(this).removeClass('touch');
+  });
   initialized = true;
 }
+
+var filters = [];
+function onClickFilterApply() {
+  filters = [];
+  $('.filter input:checked').each(function() {
+    filters.push(this.value);
+  });
+  if (onApply) {
+    onApply();
+  }
+  $('#filters').fadeOut();
+}
+
+exports.getFilters = function() {
+  return filters;
+};

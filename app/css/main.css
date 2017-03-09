@@ -182,10 +182,19 @@ ul#filter-list {
   font-family: '맑은고딕', NanumGothic, MalgunGothic, sans-serif;
   font-size: 15px;
   border-bottom: 1px solid #eee;
+	background-color: white;
 }
 
 #filter-list li.filter:last-child {
   border:none;
+}
+
+#filter-list li.filter:hover {
+  background-color: #eeffee;
+}
+
+#filter-list li.filter.touch {
+	background-color: #eeffee;
 }
 
 #filter-list .filter input {

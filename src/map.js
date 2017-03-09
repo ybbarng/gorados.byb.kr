@@ -13,7 +13,7 @@ var defaultScale = 16;
 
 
 $(function() {
-  Filter.initFilter();
+  Filter.initFilter(updatePokemons.bind(this, false, true));
   var paramLatLng = Get.getUrlParameter('p');
   if (paramLatLng) {
     paramLatLng = paramLatLng.split(',').map(Number);
@@ -97,7 +97,8 @@ $(function() {
       'max_latitude': bounds._northEast.lat,
       'min_longitude': bounds._southWest.lng,
       'max_longitude': bounds._northEast.lng,
-      'zoom_level': map.getZoom()
+      'zoom_level': map.getZoom(),
+      'filters': Filter.getFilters().join(',')
     };
     $.get('pokemons.json', params, function(pokemons) {
       removeMarkersOutOfBounds(pokemonMarkers, bounds, forceClear);
