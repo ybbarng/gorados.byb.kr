@@ -60,12 +60,12 @@ $(function() {
   }
 
   var selectedMarker = null;
-  function updatePopup() {
+  function updatePopupTimestamp() {
     if (selectedMarker == null) {
       return;
     }
     if (selectedMarker.pokemon) {
-      selectedMarker.setPopupContent(selectedMarker.pokemon.getPopupContents());
+      $('span.despawn').text(selectedMarker.pokemon.getRemainTimeStr());
     }
   }
 
@@ -130,7 +130,7 @@ $(function() {
           var now = Date.now() / 1000;
           marker.setOpacity(pokemon.getOpacity(now));
           selectedMarker = e.target;
-          updatePopup();
+          selectedMarker.setPopupContent(selectedMarker.pokemon.getPopupContents());
           // The popup will be open automatically by the default event listener
         });
         marker.addEventListener('dblclick', function(e) {
@@ -257,7 +257,7 @@ $(function() {
     selectedMarker = null;
   });
 
-  setInterval(updatePopup, 1000);
+  setInterval(updatePopupTimestamp, 1000);
   setInterval(function() {
     updatePokemons(true, false);
   }, 60 * 1000);

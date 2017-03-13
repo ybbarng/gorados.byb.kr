@@ -130,7 +130,7 @@ Pokemon.prototype.getPopupContents = function() {
   var despawnStr = this.getRemainTimeStr();
   return '<h2>' + this.name + '</h2> ' +
     '<b>개체치</b>: ' + this.rank + ' (' + this.perfectionStr + '%: ' + this.attack + '/' + this.defence + '/' + this.stamina + ')<br>' +
-    '<b>남은 시간</b>: ' + despawnStr + '<br>' +
+    '<b>남은 시간</b>: <span class="despawn">' + despawnStr + '</span><br>' +
     '<b>기술</b>: ' + this.move1 + '/' + this.move2 + '<br>' +
     'disguise: ' + this.disguise + '<br>' +
     getMapLinks(this.latitude, this.longitude, this.name);
