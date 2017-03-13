@@ -39,8 +39,10 @@ function Pokemon(pokemon) {
   this.attack = Number(pokemon['attack']);
   this.defence = Number(pokemon['defence']);
   this.stamina = Number(pokemon['stamina']);
-  this.move1 = Moves[pokemon['move1']] || pokemon['move1'];
-  this.move2 = Moves[pokemon['move2']] || pokemon['move2'];
+  this.move1 = pokemon['move1'];
+  this.move2 = pokemon['move2'];
+  this.move1Str = Moves[pokemon['move1']] || pokemon['move1'];
+  this.move2Str = Moves[pokemon['move2']] || pokemon['move2'];
   this.perfection = calculateIvPerfection(this.attack, this.defence, this.stamina);
   this.perfectionStr = this.perfection.toFixed(1);
   this.rank = calculateIvRank(this.perfection);
@@ -126,17 +128,21 @@ function getMapLinks(latitude, longitude, label) {
   return '<div class="map-apps">' + kakaoMap + googleMap + '</div>';
 }
 
+function getMoveLinkText(move, moveName) {
+  return '<a href="http://pokemongo.inven.co.kr/dataninfo/move/detail.php?code=' + move + '" target="_blank" title="\'' + moveName + '\' 기술 자세히 알아보기">' + moveName + '</a>';
+}
+
 Pokemon.prototype.getPopupContents = function() {
   var despawnStr = this.getRemainTimeStr();
   return '<h2>' + this.name +
-      '<a href="http://pokemongo.inven.co.kr/dataninfo/pokemon/detail.php?code=' + this.pokemon_id + '">' +
-        '<img class="pokedex" src="/static/images/pokedex.png" alt="포켓몬 도감에서 보기">' +
+      '<a href="http://pokemongo.inven.co.kr/dataninfo/pokemon/detail.php?code=' + this.pokemon_id + '" target="_blank" title="포켓몬도감에서 보기">' +
+        '<img class="pokedex" src="/static/images/pokedex.png" alt="포켓몬도감에서 보기">' +
         '<img class="pokedex-pokemon-image" src="/static/images/pokemons/' + this.pokemon_id + '.png">' +
       '</a>' +
     '</h2> ' +
     '<b>개체치</b>: ' + this.rank + ' (' + this.perfectionStr + '%: ' + this.attack + '/' + this.defence + '/' + this.stamina + ')<br>' +
     '<b>남은 시간</b>: <span class="despawn">' + despawnStr + '</span><br>' +
-    '<b>기술</b>: ' + this.move1 + '/' + this.move2 + '<br>' +
+    '<b>기술</b>: ' + getMoveLinkText(this.move1, this.move1Str) + '/' + getMoveLinkText(this.move2, this.move2Str) + '<br>' +
     'disguise: ' + this.disguise + '<br>' +
     getMapLinks(this.latitude, this.longitude, this.name);
 };
