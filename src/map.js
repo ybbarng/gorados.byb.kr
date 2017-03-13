@@ -21,12 +21,11 @@ $(function() {
   var latLng = paramLatLng || defaultLatLng;
   var scale = Math.min(10, Math.max(parseInt(Get.getUrlParameter('z')), 16)) || defaultScale;
   L.mapbox.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
-  var maxZoom = ['Android', 'iOS'].indexOf(platform) !== -1 ? 16 : 19;
-  var map = new L.mapbox.Map('map', 'mapbox.streets', {
-      maxZoom: maxZoom
-    })
+  var map = new L.mapbox.Map('map', 'mapbox.streets')
     .setView(latLng, scale);
-  L.control.locate().addTo(map);
+  L.control.locate({
+    'keepCurrentZoomLevel': true
+  }).addTo(map);
 
   var placeInvisibleZoom = 14;
 
