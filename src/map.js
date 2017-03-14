@@ -49,7 +49,7 @@ $(function() {
           (marker.pokemon && (forceClear || Number(marker.pokemon['despawn']) < now)) ||
           (marker.pokemon === undefined && zoom <= placeInvisibleZoom)) {
         if (marker === selectedMarker) {
-          selectedMarker = null;
+          return;
         }
         map.removeLayer(marker);
         toBeRemoved.push(id);
