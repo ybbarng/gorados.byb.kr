@@ -133,17 +133,19 @@ $(function() {
             map.removeLayer(newMarker);
           }, 1000);
         }
-        if (paramLatLng && i === 0) {
-          var pLatLng = pokemon.getLatLng();
-          if (pLatLng[0] === paramLatLng[0] &&
-              pLatLng[1] === paramLatLng[1]) {
-            marker.fireEvent('click');
-          }
-          paramLatLng = null;
-        }
-        if (paramId && paramId === pokemon.id) {
+        if (i === 0) {
+          if(paramId && paramId === pokemon.id) {
             marker.fireEvent('click');
             paramId = null;
+            paramLatLng = null;
+          } else if (paramLatLng) {
+            var pLatLng = pokemon.getLatLng();
+            if (pLatLng[0] === paramLatLng[0] &&
+                pLatLng[1] === paramLatLng[1]) {
+              marker.fireEvent('click');
+            }
+            paramLatLng = null;
+          }
         }
       }
     });
