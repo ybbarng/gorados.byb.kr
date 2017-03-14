@@ -231,17 +231,19 @@ ul#filter-list {
   vertical-align: middle;
 }
 
-.leaflet-popup-content h2 a {
+.pokedex-wrapper {
   position: relative;
+  width: 24px;
+  height: 20px;
+  margin-left: 5px;
+  vertical-align: middle;
+  display: inline-block;
 }
 
 img.pokedex {
   display: inline-block;
   width: 24px;
-  height: 20px;
-  padding-bottom: 3px;
-  margin-left: 5px;
-  vertical-align: middle;
+  height: 17px;
 }
 
 img.pokedex-pokemon-image {
@@ -249,5 +251,5 @@ img.pokedex-pokemon-image {
   width: 7px;
   height: 7px;
   top: 4px;
-  left: 8px;
+  left: 3px;
 }
