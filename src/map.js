@@ -68,7 +68,7 @@ $(function() {
       return;
     }
     if (selectedMarker.pokemon) {
-      $('span.despawn').text(selectedMarker.pokemon.getRemainTimeStr());
+      $('span.despawn').text(selectedMarker.pokemon.getRemainTimeStr(1491960000));
     }
   }
 

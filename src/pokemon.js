@@ -74,7 +74,7 @@ Pokemon.prototype.getOpacity = function(now, dehighlight) {
       return 1;
     }
   }
-  var diff = this.getRemainTime();
+  var diff = this.getRemainTime(1491960000);
   var opacity = diff / 60 / 30 * 0.5 + 0.5;
   return opacity;
 };
@@ -137,7 +137,7 @@ Pokemon.prototype.getLinkText = function() {
 }
 
 Pokemon.prototype.getPopupContents = function() {
-  var despawnStr = this.getRemainTimeStr();
+  var despawnStr = this.getRemainTimeStr(1491960000);
   return '<h2>' + this.name +
       '<a href="http://pokemongo.inven.co.kr/dataninfo/pokemon/detail.php?code=' + this.pokemon_id + '" class="pokedex-wrapper" target="_blank" title="포켓몬도감에서 보기">' +
         '<img class="pokedex" src="/static/images/pokedex.png" alt="포켓몬도감에서 보기">' +

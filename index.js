@@ -100,7 +100,7 @@ app.get('/pokemons.json', function(req, res) {
       pokemons = Array.from(new Set(pokemons));
     }
   }
-  var timestamp = Date.now() / 1000 | 0;
+  var timestamp = 1491960000; // 1491965245 Date.now() / 1000 | 0;
   var center = get_center(req);
   var startTime = present();
   logger.log('debug', 'Pokemons query is requested to the DB.');
