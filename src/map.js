@@ -25,7 +25,7 @@ $(function () {
     Math.min(10, Math.max(Number.parseInt(Get.getUrlParameter("z")), 16)) ||
     defaultScale;
   let paramId = Get.getUrlParameter("id");
-  L.mapbox.accessToken = "YOUR_MAPBOX_ACCESS_TOKEN";
+  L.mapbox.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
   const map = new L.mapbox.Map("map", "mapbox.streets").setView(latLng, scale);
   L.control
     .locate({
