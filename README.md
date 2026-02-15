@@ -1,6 +1,6 @@
 # GORADOS
 
-포켓몬고 실시간 위치 지도 서비스입니다. 서울 지역의 포켓몬 출현 위치, 포케스탑, 체육관 정보를 Mapbox 기반 지도 위에 표시합니다.
+포켓몬고 실시간 위치 지도 서비스입니다. 서울 지역의 포켓몬 출현 위치, 포케스탑, 체육관 정보를 Leaflet + OpenStreetMap 기반 지도 위에 표시합니다.
 
 ## 주요 기능
 
@@ -15,7 +15,7 @@
 ## 기술 스택
 
 - **Backend**: Node.js, Express 5, SQLite3
-- **Frontend**: jQuery, Mapbox.js (Leaflet 기반)
+- **Frontend**: jQuery, Leaflet + OpenStreetMap
 - **Build**: Vite
 - **Test**: Vitest
 - **Lint/Format**: Biome
@@ -27,7 +27,6 @@
 ### 사전 요구사항
 
 - Node.js
-- [Mapbox](https://www.mapbox.com/) access token
 
 ### 설정
 
@@ -36,12 +35,7 @@
    pnpm install
    ```
 
-2. 환경 변수 설정 - 프로젝트 루트에 `.env` 파일 생성:
-   ```
-   MAPBOX_ACCESS_TOKEN=your_mapbox_access_token
-   ```
-
-3. Mapbox token을 소스에 반영 후 프론트엔드 빌드:
+2. 프론트엔드 빌드:
    ```bash
    pnpm build
    ```
@@ -118,6 +112,7 @@ gorados/
 | 2017.11 | 포트폴리오 전시용 정리. 고정 타임스탬프 설정, 미리보기 이미지 추가 |
 | 2026.02 | 포트폴리오용 더미 데이터 추가, README 작성 |
 | 2026.02 | 빌드 도구 모던화: gulp+browserify → Vite, yarn → pnpm, Express 5, Winston 3, Biome, Vitest 도입 |
+| 2026.02 | Mapbox → Leaflet + OpenStreetMap 전환 (Mapbox 유료화 대응) |
 
 ## 라이선스
 
