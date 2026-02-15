@@ -14,11 +14,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "concurrently": "^9.2.1",
     "vite": "^6.1.0",
     "vitest": "^3.0.5"
   },
   "scripts": {
-    "dev": "vite build --watch",
+    "dev": "concurrently -n server,vite -c blue,green \"node index.js\" \"vite build --watch\"",
     "build": "vite build",
     "start": "node index.js",
     "lint": "biome check .",
@@ -27,6 +28,10 @@
     "test": "vitest run"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild", "sqlite3"]
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "esbuild",
+      "sqlite3"
+    ]
   }
 }
