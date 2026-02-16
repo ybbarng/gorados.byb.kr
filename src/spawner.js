@@ -8,6 +8,8 @@ const MIN_DURATION_MINUTES = 15;
 const MAX_DURATION_MINUTES = 25;
 const DISGUISE_CHANCE = 0.015;
 const MAX_RESULTS = 500;
+const SLOTS_PER_PLACE = 3;
+const JITTER = 0.0003; // 약 30m 좌표 분산
 
 const PLACE_TYPES = ["pokestop", "gym", "7-eleven", "lotteria", "angel-in-us"];
 
@@ -17,14 +19,18 @@ const classificationSets = classification.map(
 );
 
 // 스폰포인트별 고정 오프셋 (시간 분산용)
-function getSpawnOffset(placeIndex) {
-  const rng = mulberry32(hashSeed(placeIndex, 0x500ff5e7));
+function getSpawnOffset(placeIndex, slot) {
+  const rng = mulberry32(
+    hashSeed(placeIndex * SLOTS_PER_PLACE + slot, 0x500ff5e7),
+  );
   return Math.floor(rng() * CYCLE_SECONDS);
 }
 
 // 스폰포인트별 지속시간 (15~25분)
-function getSpawnDuration(placeIndex, cycleNumber) {
-  const rng = mulberry32(hashSeed(placeIndex, cycleNumber + 0xd0aaaa));
+function getSpawnDuration(placeIndex, slot, cycleNumber) {
+  const rng = mulberry32(
+    hashSeed(placeIndex * SLOTS_PER_PLACE + slot, cycleNumber + 0xd0aaaa),
+  );
   return (
     (MIN_DURATION_MINUTES +
       Math.floor(rng() * (MAX_DURATION_MINUTES - MIN_DURATION_MINUTES + 1))) *
@@ -32,19 +38,27 @@ function getSpawnDuration(placeIndex, cycleNumber) {
   );
 }
 
-// 특정 장소/시간에 포켓몬 생성
-export function spawnAt(placeIndex, lat, lng, now) {
-  const offset = getSpawnOffset(placeIndex);
+// 슬롯별 좌표 미세 분산
+function getSlotJitter(placeIndex, slot) {
+  if (slot === 0) return [0, 0];
+  const rng = mulberry32(hashSeed(placeIndex, slot + 0x11773e));
+  return [(rng() - 0.5) * JITTER * 2, (rng() - 0.5) * JITTER * 2];
+}
+
+// 특정 장소/슬롯/시간에 포켓몬 생성
+export function spawnAt(placeIndex, lat, lng, now, slot = 0) {
+  const offset = getSpawnOffset(placeIndex, slot);
   const adjustedTime = now - offset;
   const cycleNumber = Math.floor(adjustedTime / CYCLE_SECONDS);
   const timeInCycle = adjustedTime - cycleNumber * CYCLE_SECONDS;
-  const duration = getSpawnDuration(placeIndex, cycleNumber);
+  const duration = getSpawnDuration(placeIndex, slot, cycleNumber);
 
   if (timeInCycle >= duration) {
     return null; // 이 사이클에서 이미 소멸
   }
 
-  const seed = hashSeed(placeIndex, cycleNumber);
+  const uniqueIndex = placeIndex * SLOTS_PER_PLACE + slot;
+  const seed = hashSeed(uniqueIndex, cycleNumber);
   const rng = mulberry32(seed);
 
   const pokemonId = randInt(rng, 1, 252); // 1~251
@@ -63,11 +77,13 @@ export function spawnAt(placeIndex, lat, lng, now) {
   const disguise = rng() < DISGUISE_CHANCE ? "1" : "0";
   const despawn = cycleNumber * CYCLE_SECONDS + offset + duration;
 
+  const [jLat, jLng] = getSlotJitter(placeIndex, slot);
+
   return {
-    id: `${placeIndex}_${cycleNumber}`,
+    id: `${placeIndex}_${slot}_${cycleNumber}`,
     pokemon_id: pokemonId,
-    latitude: lat,
-    longitude: lng,
+    latitude: lat + jLat,
+    longitude: lng + jLng,
     despawn,
     disguise,
     attack,
@@ -110,20 +126,22 @@ export function generatePokemonsInBounds(places, bounds, zoom, filters, now) {
       continue;
     }
 
-    const pokemon = spawnAt(i, lat, lng, nowSeconds);
-    if (!pokemon) continue;
+    for (let slot = 0; slot < SLOTS_PER_PLACE; slot++) {
+      const pokemon = spawnAt(i, lat, lng, nowSeconds, slot);
+      if (!pokemon) continue;
 
-    if (
-      !visibleSet.has(pokemon.pokemon_id) &&
-      !filterSet.has(pokemon.pokemon_id)
-    ) {
-      continue;
+      if (
+        !visibleSet.has(pokemon.pokemon_id) &&
+        !filterSet.has(pokemon.pokemon_id)
+      ) {
+        continue;
+      }
+
+      const dLat = pokemon.latitude - centerLat;
+      const dLng = pokemon.longitude - centerLng;
+      pokemon._dist = dLat * dLat + dLng * dLng;
+      results.push(pokemon);
     }
-
-    const dLat = lat - centerLat;
-    const dLng = lng - centerLng;
-    pokemon._dist = dLat * dLat + dLng * dLng;
-    results.push(pokemon);
   }
 
   results.sort((a, b) => a._dist - b._dist);
