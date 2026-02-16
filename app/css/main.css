@@ -269,8 +269,9 @@ img.pokedex-pokemon-image {
 
 #type-chart-button a {
   cursor: pointer;
-  display: block;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 26px;
   height: 26px;
 }
