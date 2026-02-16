@@ -31,7 +31,8 @@
       "*.csv",
       "*.sql",
       "data/",
-      "scripts/"
+      "scripts/",
+      "dist/"
     ]
   }
 }

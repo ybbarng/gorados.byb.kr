@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   build: {
-    outDir: "app/js",
+    outDir: "dist/js",
     emptyOutDir: false,
     lib: {
       entry: "src/map.js",
