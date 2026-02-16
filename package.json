@@ -1,20 +1,13 @@
 {
   "name": "gorados",
   "version": "1.0.0",
-  "main": "index.js",
   "author": "ybbarng <ybbarng@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "compression": "^1.8.0",
-    "express": "^5.1.0",
-    "platform": "^1.3.6",
-    "sqlite3": "^5.1.7",
-    "winston": "^3.17.0",
-    "winston-daily-rotate-file": "^5.0.0"
+    "platform": "^1.3.6"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "concurrently": "^9.2.1",
     "vite": "^6.1.0",
     "vitest": "^3.0.5"
   },
@@ -28,6 +21,6 @@
     "test": "vitest run"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild", "sqlite3"]
+    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild"]
   }
 }
