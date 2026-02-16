@@ -86,6 +86,7 @@ function getClassificationIndex(zoom) {
 
 // 뷰포트 내 포켓몬 생성
 export function generatePokemonsInBounds(places, bounds, zoom, filters, now) {
+  if (!places) return [];
   const nowSeconds = now / 1000;
   const classIdx = getClassificationIndex(zoom);
   const visibleSet = classificationSets[classIdx];
@@ -131,6 +132,7 @@ export function generatePokemonsInBounds(places, bounds, zoom, filters, now) {
 
 // 뷰포트 내 장소 조회
 export function getPlacesInBounds(places, bounds) {
+  if (!places) return [];
   const centerLat = (bounds._southWest.lat + bounds._northEast.lat) / 2;
   const centerLng = (bounds._southWest.lng + bounds._northEast.lng) / 2;
 

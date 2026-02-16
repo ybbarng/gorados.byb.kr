@@ -18,11 +18,12 @@ db.all(
   "SELECT latitude, longitude, type FROM place ORDER BY latitude, longitude",
   (err, rows) => {
     if (err) throw err;
-    const places = rows.map((r) => [r.latitude, r.longitude, typeIndexMap[r.type]]);
-    fs.writeFileSync(
-      path.join(dataDir, "places.json"),
-      JSON.stringify(places),
-    );
+    const places = rows.map((r) => [
+      r.latitude,
+      r.longitude,
+      typeIndexMap[r.type],
+    ]);
+    fs.writeFileSync(path.join(dataDir, "places.json"), JSON.stringify(places));
     console.log(`places.json: ${places.length}개 추출`);
   },
 );
