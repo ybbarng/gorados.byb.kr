@@ -59,7 +59,7 @@ html, body {
   width: 30px;
   height: 30px;
   position: absolute;
-  top: 155px;
+  top: 157px;
   left: 10px;
   z-index: 1000;
   display: none;
@@ -110,12 +110,13 @@ html, body {
 }
 
 #filter-button {
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   position: absolute;
-  top: 115px;
+  top: 117px;
   left: 10px;
   z-index: 1000;
+  border-radius: 4px;
 }
 
 #filter-button a {
@@ -126,8 +127,8 @@ html, body {
 }
 
 #filter-button img {
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
 }
 
 #filters {
