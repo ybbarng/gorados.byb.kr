@@ -59,7 +59,7 @@ html, body {
   width: 30px;
   height: 30px;
   position: absolute;
-  top: 157px;
+  top: 173px;
   left: 10px;
   z-index: 1000;
   display: none;
@@ -113,7 +113,7 @@ html, body {
   width: 30px;
   height: 30px;
   position: absolute;
-  top: 117px;
+  top: 129px;
   left: 10px;
   z-index: 1000;
   border-radius: 4px;
@@ -263,7 +263,7 @@ img.pokedex-pokemon-image {
   height: 26px;
   position: absolute;
   top: 10px;
-  left: 50px;
+  left: 54px;
   z-index: 1000;
 }
 
